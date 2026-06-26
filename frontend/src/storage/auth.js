@@ -12,7 +12,7 @@ export const useAuthStore = defineStore("auth", () => {
     const status_code = ref(null);
 
     async function login(user) {
-        auth_user = await service.login(user);
+        auth_user.value = await service.login(user);
         auth_user.value = service.auth_user.nombre;
         authenticated.value = service.auth_user.authenticated;
         jwt.value = service.auth_user.access_token;
