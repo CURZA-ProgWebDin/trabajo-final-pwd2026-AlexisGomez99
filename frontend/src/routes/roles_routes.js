@@ -10,7 +10,7 @@ export const roles = [{
     }
 },
 {
-    path: "/create",
+    path: "/roles/create",
     component: () => import("../components/roles/RolesCreate.vue"),
     name: "RolesCreate",
     meta: {
@@ -21,7 +21,7 @@ export const roles = [{
     }
 },
 {
-    path: "/edit",
+    path: "/roles/edit",
     component: () => import("../components/roles/RolesEdit.vue"),
     name: "RolesEdit",
     meta: {

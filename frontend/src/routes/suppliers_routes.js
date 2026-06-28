@@ -10,7 +10,7 @@ export const suppliers = [{
     },
 },
 {
-    path: "/create",
+    path: "/proveedores/create",
     component: () => import("../components/suppliers/SuppliersCreate.vue"),
     name: "SuppliersCreate",
     meta: {
@@ -20,7 +20,7 @@ export const suppliers = [{
         menu: false
     }
 },{
-    path: "/supplier/edit",
+    path: "/proveedores/edit",
     component: () => import("../components/suppliers/SuppliersEdit.vue"),
     name: "SuppliersEdit",
     meta: {
