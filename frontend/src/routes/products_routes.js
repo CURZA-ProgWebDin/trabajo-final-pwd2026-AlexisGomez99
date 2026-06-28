@@ -22,8 +22,8 @@ export const products = [{
 },
 {
     path: "/productos/edit",
-    component: () => import("../components/products/ProductsList.vue"),
-    name: "ProductsList",
+    component: () => import("../components/products/ProductsEdit.vue"),
+    name: "ProductsEdit",
     meta: {
         rol_access: ["admin", "operador"],
         required_auth: true,

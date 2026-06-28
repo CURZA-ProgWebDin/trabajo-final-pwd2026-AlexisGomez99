@@ -1,118 +1,120 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
-import { useCategorieStore } from "../../storage/categories";
-import { useSupplierStore } from "../../storage/suppliers";
-import { useProductStore } from "../../storage/products";
+import { useRouter } from 'vue-router';
+import { useUserStore } from '../../storage/users';
+import { onMounted, reactive, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRolesStore } from '../../storage/roles';
+import { useCategorieStore } from '../../storage/categories';
+import { useProductStore } from '../../storage/products';
+import { useSupplierStore } from '../../storage/suppliers';
 
-const categorieStore = useCategorieStore();
+const router = useRouter();
+const categoriaStore = useCategorieStore();
 const productStore = useProductStore();
 const supplierStore = useSupplierStore();
-const { categories } = storeToRefs(categorieStore);
-const { listar_categoria } = categorieStore;
 const { suppliers } = storeToRefs(supplierStore);
 const { listar } = supplierStore;
-const { crear } = productStore;
-const router = useRouter();
+const { categories } = storeToRefs(categoriaStore);
+const { listar_categoria } = categoriaStore;
+const { productEdit } = storeToRefs(productStore);
+const { modificar } = productStore;
 const cargando = ref(true);
-const new_product = reactive({
-    nombre: '',
-    descripcion: '',
-    precio_costo: '',
-    precio_venta: '',
-    stock_actual: '',
-    stock_minimo: '',
-    proveedor_id: '',
-    categoria_id: ''
-});
-onMounted(async () => {
-    await listar();
-    await listar_categoria();
-    cargando.value = false;
-});
-async function submit() {
-    if (new_product.nombre && new_product.descripcion && new_product.precio_costo && new_product.precio_venta && new_product.stock_actual && new_product.stock_minimo && new_product.proveedor_id && new_product.categoria_id) {
-        await crear(new_product);
-        new_product.nombre = "";
-        new_product.descripcion = "";
-        new_product.precio_costo = "";
-        new_product.precio_venta = "";
-        new_product.stock_actual = "";
-        new_product.stock_minimo = "";
-        new_product.proveedor_id = "";
-        new_product.categoria_id = "";
-        router.push({ name: 'Products' })
 
-    } else {
-        alert("Complete todos los campos.");
+onMounted(async () => {
+    // todo esto para que el valor 'admin' o cualquier nombre pase a dato numerico como 1 y pueda reflectarse en el select
+    await listar();
+    await listar_categoria()
+    const nombreProveedorProducto = productEdit.value.proveedor_id || productEdit.value.proveedor_nombre;
+    if (nombreProveedorProducto && suppliers.value.length > 0) {
+        const proveedorEncontrador = suppliers.value.find(
+            (r) => r.nombre.toLowerCase().trim() === nombreProveedorProducto.toLowerCase().trim()
+        );
+        if (proveedorEncontrador) {
+            productEdit.value.proveedor_id = proveedorEncontrador.id;
+        }
     }
+    const nombreCategoriaProducto = productEdit.value.categoria_id || productEdit.value.categoria_nombre;
+    if (nombreCategoriaProducto && categories.value.length > 0) {
+        const categoriaEncontrador = categories.value.find(
+            (r) => r.nombre.toLowerCase().trim() === nombreCategoriaProducto.toLowerCase().trim()
+        );
+        if (categoriaEncontrador) {
+            productEdit.value.categoria_id = categoriaEncontrador.id;
+        }
+    }
+    cargando.value = false;
+})
+
+async function editar() {
+    await modificar(productEdit.value);
+    router.push({ name: 'Products' })
 }
 </script>
 
 <template>
     <div class="form-container">
-        <form @submit.prevent="submit" class="custom-form">
+        <form @submit.prevent="editar" class="custom-form">
 
             <button type="button" @click="router.push({ name: 'Products' })" class="cancel-btn" title="Cancelar">
                 <mdicon name="close" size="18"></mdicon>
             </button>
 
-            <h2>Crear producto</h2>
+            <h2>Editar producto</h2>
 
             <div class="form-group">
                 <label>NOMBRE</label>
-                <input type="text" v-model="new_product.nombre" placeholder="Manzanas" required>
+                <input type="text" v-model="productEdit.nombre" required>
             </div>
             <div class="form-group">
                 <label>DESCRIPCION</label>
-                <input type="text" v-model="new_product.descripcion" placeholder="">
+                <input type="text" v-model="productEdit.descripcion">
             </div>
             
             <div class="form-group">
                 <label>PRECIO_COSTO</label>
-                <input type="number" step="any" min="0" v-model="new_product.precio_costo" placeholder="0.00">
+                <input type="number" min="0" step="any" v-model="productEdit.precio_costo">
             </div>
             <div class="form-group">
                 <label>PRECIO_VENTA</label>
-                <input type="number" step="any" min="0" v-model="new_product.precio_venta" placeholder="0.00">
+                <input type="number" min="0" step="any" v-model="productEdit.precio_venta">
             </div>
             <div class="form-group">
                 <label>STOCK_ACTUAL</label>
-                <input type="number" min="0" v-model="new_product.stock_actual" placeholder="0">
+                <input type="number" min="0" v-model="productEdit.stock_actual">
             </div>
             <div class="form-group">
                 <label>STOCK_MINIMO</label>
-                <input type="number" min="0" v-model="new_product.stock_minimo" placeholder="0">
-            </div>
+                <input type="number" min="0" v-model="productEdit.stock_minimo">
+            </div>        
+            
 
             <div v-if="!cargando" class="form-group">
+                <label>PROVEEDOR</label>
+                <select v-model="productEdit.proveedor_id">
+                    <option value="">-- Seleccionar Proveedor --</option>
+                    <option v-for="proveedor in suppliers" :key="proveedor.id" :value="Number(proveedor.id)">
+                        {{ proveedor.nombre }}
+                    </option>
+                </select>
+            </div>
+            <div v-else>
+                <p>Cargando proveedores...</p>
+            </div>
+            <div v-if="!cargando" class="form-group">
                 <label>CATEGORIA</label>
-                <select v-model="new_product.categoria_id">
+                <select v-model="productEdit.categoria_id">
                     <option value="">-- Seleccionar Categoria --</option>
-                    <option v-for="categoria in categories" :key="categoria.id" :value="categoria.id">
+                    <option v-for="categoria in categories" :key="categoria.id" :value="Number(categoria.id)">
                         {{ categoria.nombre }}
                     </option>
                 </select>
             </div>
             <div v-else>
-                <p> Cargando categorias...</p>
-            </div>
-            <div v-if="!cargando" class="form-group">
-                <label>PROVEEDOR</label>
-                <select v-model="new_product.proveedor_id">
-                    <option value="">-- Seleccionar Proveedor --</option>
-                    <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">
-                        {{ supplier.nombre }}
-                    </option>
-                </select>
-            </div>
-            <div v-else>
-                <p> Cargando proveedores...</p>
+                <p>Cargando categorias...</p>
             </div>
 
             <button type="submit" class="submit-btn">
-                CREAR PRODUCTO
+                ACEPTAR CAMBIOS
             </button>
         </form>
     </div>
@@ -166,7 +168,7 @@ label {
     letter-spacing: 0.5px;
 }
 
-/* Incluido input[type="number"] a los estilos globales */
+/* Agregado input[type="number"] a la lista de estilos globales */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -188,6 +190,7 @@ input::placeholder {
     color: #64748b;
 }
 
+/* Agregado input[type="number"]:focus para unificar la transición */
 input:focus,
 select:focus {
     border-color: #10b981;
@@ -195,16 +198,15 @@ select:focus {
     box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
 }
 
-/* Ocultar las flechas por defecto en Chrome, Safari, Edge y Opera */
+/* Ocultar las flechas por defecto que traen los inputs de tipo número */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-/* Ocultar las flechas en Firefox */
 input[type="number"] {
-    -moz-appearance: textfield;
+    -moz-appearance: textfield; /* Para Firefox */
 }
 
 .submit-btn {

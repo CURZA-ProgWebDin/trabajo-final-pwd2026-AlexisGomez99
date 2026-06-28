@@ -1,43 +1,58 @@
 import { ref } from "vue";
 import ApiService from "../service/ApiService";
 import { defineStore } from "pinia";
-import AuthService from "../service/AuthService";
+import { reactive } from "vue";
 
-export const useMovementStore = defineStore("movements", () => {
-    const movement = ref({});
-    const movements = ref([]);
-    const loading = ref(false);
-    const api_service = new ApiService("/movimientos/");
-    const auth_service = new AuthService();
+export const useMovementStore = defineStore("movimientos", () => {
+  const movement = ref({});
+  const movements = ref([]);
+  const loading = ref(false);
+  const api_service = new ApiService("/movimientos/");
+  const movementEdit = reactive({
+    id: '',
+    tipo: '',
+    cantidad: '',
+    motivo: '',
+    user: '',
+    producto: ''
+  });
 
-    async function listar() {
-        loading.value = true;
-        const data = await api_service.getAll();
-        if (data) {
-            console.table(data);
-            movements.value = data;
-        }
-        loading.value = false;
+  async function listar() {
+    loading.value = true;
+    const data = await api_service.getAll();
+    if (data) {
+      movements.value = data;
     }
-    async function buscarUno(id) {
-        loading.value = true;
-        const data = await api_service.findOne(id);
-        if (data) {
-            movement.value = data;
-        }
-        loading.value = false;
+    loading.value = false;
+  }
+
+  async function buscarUno(id) {
+    loading.value = true;
+    const data = await api_service.findOne(id);
+    if (data) {
+      movement.value = data;
     }
-    async function crear(data) {
-        await api_service.create(data);
-    }
-    async function modificar(data) {
-        await api_service.update(data);
-    }
-    async function eliminar(id) {
-        await api_service.destroy(id);
-    }
-    async function misMovimientos() {
-        await auth_service.getMe();
-    }
-    return { movements, movement, crear, eliminar, modificar, buscarUno, listar, misMovimientos };
+    loading.value = false;
+  }
+
+  async function crear(data) {
+    await api_service.create(data);
+  }
+
+  async function modificar(data) {
+    await api_service.update(data,data.id);
+  }
+
+  async function eliminar(id) {
+    await api_service.destroy(id);
+  }
+  function setMovement(movement) {
+    movementEdit.id = movement.id;
+    movementEdit.tipo = movement.tipo;
+    movementEdit.cantidad = movement.cantidad;
+    movementEdit.motivo = movement.motivo;
+    movementEdit.producto = movement.producto;
+    movementEdit.user = movement.producto;
+  }
+  return { movements, movement, movementEdit, crear, eliminar, modificar, buscarUno, listar, setMovement };
 });

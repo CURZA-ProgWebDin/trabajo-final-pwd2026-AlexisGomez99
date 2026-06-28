@@ -22,8 +22,8 @@ export const movements = [{
 },
 {
     path: "/movimientos/edit",
-    name: "MovementsList",
-    component: () => import("../components/movements/MovementsList.vue"),
+    name: "MovementsEdit",
+    component: () => import("../components/movements/MovementsEdit.vue"),
     meta: [{
         rol_access: ["admin", "operador"],
         required_auth: true,

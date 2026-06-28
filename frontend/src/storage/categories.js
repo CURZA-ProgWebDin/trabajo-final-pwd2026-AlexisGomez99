@@ -14,7 +14,7 @@ export const useCategorieStore = defineStore("categories", () => {
     descripcion: '',
   });
 
-  async function listar() {
+  async function listar_categoria() {
     loading.value = true;
     const data = await api_service.getAll();
     if (data) {
@@ -48,5 +48,5 @@ export const useCategorieStore = defineStore("categories", () => {
     categorieEdit.nombre = categorie.nombre;
     categorieEdit.descripcion = categorie.descripcion;
   }
-  return { categories, categorie, categorieEdit, crear, eliminar, modificar, buscarUno, listar, setCategorie };
+  return { categories, categorie, categorieEdit, crear, eliminar, modificar, buscarUno, listar_categoria, setCategorie };
 });

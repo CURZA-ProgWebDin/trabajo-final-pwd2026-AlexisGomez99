@@ -7,7 +7,7 @@ import { useRouter } from "vue-router";
 import { useCategorieStore } from "../../storage/categories.js";
 
 const categorieStore = useCategorieStore();
-const { listar, eliminar } = categorieStore;
+const { listar_categoria, eliminar } = categorieStore;
 const router = useRouter();
 const { categories } = storeToRefs(categorieStore);
 const { setCategorie } = categorieStore; 
@@ -29,15 +29,15 @@ const list_categories = computed(() => {
 async function eliminarCategoria(categoria) {
     cargando.value= true;
     await eliminar(categoria.id);
-    await listar();
+    await listar_categoria();
     cargando.value= false;
 }
 function editarCategoria(categoria) {
     setCategorie(categoria)
     router.push({ name: 'CategoriesEdit' });
 }
-onMounted(() => {
-    listar();
+onMounted(async() => {
+    await listar_categoria();
     cargando.value=false
 });
 </script>

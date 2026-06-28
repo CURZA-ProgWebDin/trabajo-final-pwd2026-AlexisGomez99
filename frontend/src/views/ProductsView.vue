@@ -1,9 +1,11 @@
 <script setup>
+import ProductsList from '../components/products/ProductsList.vue';
+
 
 </script>
 
 <template>
     <section>
-        <h1>PRODUCTOS</h1>
+        <ProductsList></ProductsList>
     </section>
 </template>
