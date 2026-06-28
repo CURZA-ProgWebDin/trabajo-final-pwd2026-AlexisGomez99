@@ -12,7 +12,6 @@ export const useRolesStore = defineStore("roles", () => {
     loading.value = true;
     const data = await api_service.getAll();
     if (data) {
-      console.table(data);
       roles.value = data;
     }
     loading.value = false;

@@ -35,6 +35,7 @@ body {
   padding: 0;
   width: 100%;
   box-sizing: border-box;
-  background-color: rgb(126, 125, 180);
+  color: white;
+  background-color: #0f172a;
 }
 </style>

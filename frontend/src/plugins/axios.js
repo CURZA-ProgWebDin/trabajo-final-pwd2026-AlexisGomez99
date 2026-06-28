@@ -40,19 +40,26 @@ instance_auth.interceptors.response.use(
   (error) => {
     const authStore = useAuthStore();
     const notificationStore = useNotificationStore();
-    if (error.response.data.message)
-      notificationStore.create(error.response.data.message, true, "error");
-    if (error.status === 401) {
-      authStore.logout();
-    }
-    if (error.status === 409) {
-      notificationStore.create(error.response.data.message, true, "warning");
+    
+    const status = error.response?.status;
+    const backendMessage = error.response?.data?.message;
+
+    if (backendMessage) {
+      notificationStore.create(backendMessage, true, "error");
     }
 
-    if (error.status === 403) {
+    if (status === 401) {
+      authStore.logout();
+    }
+    
+    if (status === 409) {
+      notificationStore.create(backendMessage || "Conflicto", true, "warning");
+    }
+
+    if (status === 403) {
       authStore.goHome();
     }
 
     return Promise.reject(error);
-  },
+  }
 );

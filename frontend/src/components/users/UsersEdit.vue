@@ -1,82 +1,75 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
-import { useRolesStore } from "../../storage/roles";
-import { useUserStore } from "../../storage/users";
+import { useRouter } from 'vue-router';
+import { useUserStore } from '../../storage/users';
+import { onMounted, reactive, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRolesStore } from '../../storage/roles';
 
+const router = useRouter();
 const rolStore = useRolesStore();
 const userStore = useUserStore();
 const { roles } = storeToRefs(rolStore);
 const { listar } = rolStore;
-const { crear } = userStore;
-const router = useRouter();
+const { userEdit } = storeToRefs(userStore);
+const { modificar } = userStore;
 const cargando = ref(true);
-const new_user = reactive({
-    nombre: "",
-    email: "",
-    rol_id: "",
-    password: ""
-});
-onMounted(async () => {
-    await listar();
-    cargando.value = false;
-});
-async function submit() {
-    if (new_user.nombre && new_user.email && new_user.password && new_user.rol_id) {
-        await crear(new_user);
-        new_user.nombre = "";
-        new_user.email = "";
-        new_user.password = "";
-        new_user.rol_id = "";
-        router.push({ name: 'Users' })
 
-    } else {
-        alert("Complete todos los campos.");
+onMounted(async () => {
+    // todo esto para que el valor 'admin' o cualquier nombre pase a dato numerico como 1 y pueda reflectarse en el select
+    await listar();
+    const nombreRolUsuario = userEdit.value.rol_id || userEdit.value.rol_nombre;
+    if (nombreRolUsuario && roles.value.length > 0) {
+        const rolEncontrado = roles.value.find(
+            (r) => r.nombre.toLowerCase().trim() === nombreRolUsuario.toLowerCase().trim()
+        );
+        if (rolEncontrado) {
+            userEdit.value.rol_id = rolEncontrado.id;
+        }
     }
+    cargando.value = false;
+})
+
+async function editar() {
+    await modificar(userEdit.value);
+    router.push({ name: 'Users' })
 }
 </script>
 
 <template>
     <div class="form-container">
-        <form @submit.prevent="submit" class="custom-form">
+        <form @submit.prevent="editar" class="custom-form">
 
             <button type="button" @click="router.push({ name: 'Users' })" class="cancel-btn" title="Cancelar">
                 <mdicon name="close" size="18"></mdicon>
             </button>
 
-            <h2>Crear usuario</h2>
+            <h2>Editar usuario</h2>
 
             <div class="form-group">
                 <label>NOMBRE</label>
-                <input type="text" v-model="new_user.nombre" placeholder="Ej: Alexis Gómez">
+                <input type="text" v-model="userEdit.nombre">
             </div>
 
             <div class="form-group">
                 <label>EMAIL</label>
-                <input type="email" v-model="new_user.email" placeholder="correo@ejemplo.com">
-            </div>
-
-            <div class="form-group">
-                <label>CONTRASEÑA</label>
-                <input type="password" v-model="new_user.password" placeholder="••••••••">
+                <input type="email" v-model="userEdit.email">
             </div>
 
             <div v-if="!cargando" class="form-group">
                 <label>ROL</label>
-                <select v-model="new_user.rol_id">
+                <select v-model="userEdit.rol_id">
                     <option value="">-- Seleccionar Rol --</option>
-                    <option v-for="rol in roles" :key="rol.id" :value="rol.id">
+                    <option v-for="rol in roles" :key="rol.id" :value="Number(rol.id)">
                         {{ rol.nombre }}
                     </option>
                 </select>
             </div>
             <div v-else>
-                <p> Cargando roles...</p>
+                <p>Cargando roles...</p>
             </div>
 
             <button type="submit" class="submit-btn">
-                CREAR USUARIO
+                ACEPTAR CAMBIOS
             </button>
         </form>
     </div>

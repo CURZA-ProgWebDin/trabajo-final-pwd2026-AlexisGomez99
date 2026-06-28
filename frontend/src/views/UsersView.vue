@@ -4,7 +4,6 @@ import UsersList from '../components/users/UsersList.vue';
 
 <template>
   <section>
-    <h1>USUARIOS</h1>
     <UsersList></UsersList>
   </section>
 </template>
