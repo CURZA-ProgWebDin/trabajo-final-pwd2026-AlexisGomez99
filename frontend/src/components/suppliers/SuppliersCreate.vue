@@ -42,7 +42,7 @@ async function submit() {
 
             <div class="form-group">
                 <label>NOMBRE</label>
-                <input type="text" v-model="new_supplier.nombre" placeholder="Ej: Alexis Gómez">
+                <input type="text" v-model="new_supplier.nombre" placeholder="...">
             </div>
 
             <div class="form-group">

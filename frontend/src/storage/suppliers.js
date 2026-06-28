@@ -46,7 +46,7 @@ export const useSupplierStore = defineStore("suppliers", () => {
   async function eliminar(id) {
     await api_service.destroy(id);
   }
-  function setUser(supplier) {
+  function setSupplier(supplier) {
     supplierEdit.id = supplier.id;
     supplierEdit.nombre = supplier.nombre;
     supplierEdit.email = supplier.email;
@@ -54,5 +54,5 @@ export const useSupplierStore = defineStore("suppliers", () => {
     supplierEdit.activo = supplier.activo;
     supplierEdit.telefono = supplier.telefono;
   }
-  return { suppliers, supplier,supplierEdit, crear, eliminar, modificar, buscarUno, listar, setUser };
+  return { suppliers, supplier,supplierEdit, crear, eliminar, modificar, buscarUno, listar, setSupplier };
 });

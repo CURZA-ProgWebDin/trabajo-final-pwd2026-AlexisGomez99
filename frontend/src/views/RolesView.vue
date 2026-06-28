@@ -1,9 +1,10 @@
 <script setup>
+import RolesList from '../components/roles/RolesList.vue';
 
 </script>
 
 <template>
   <section>
-    <h1>ROLES</h1>
+    <RolesList></RolesList>
   </section>
 </template>

@@ -1,46 +1,38 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
-import { useRolesStore } from "../../storage/roles";
+import { useRouter } from 'vue-router';
+import { onMounted, reactive, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useRolesStore } from '../../storage/roles';
 
-const rolStore = useRolesStore();
-const { crear } = rolStore;
 const router = useRouter();
+const rolStore = useRolesStore();
+const { rolEdit } = storeToRefs(rolStore);
+const { modificar } = rolStore;
 const cargando = ref(true);
-const new_rol = reactive({
-    nombre: "",
-});
 
-async function submit() {
-    if (new_rol.nombre) {
-        await crear(new_rol);
-        new_rol.nombre = "";
-        router.push({ name: 'Roles' })
-
-    } else {
-        alert("Complete todos los campos.");
-    }
+async function editar() {
+    await modificar(rolEdit.value);
+    router.push({ name: 'Roles' })
 }
 </script>
 
 <template>
     <div class="form-container">
-        <form @submit.prevent="submit" class="custom-form">
+        <form @submit.prevent="editar" class="custom-form">
 
             <button type="button" @click="router.push({ name: 'Roles' })" class="cancel-btn" title="Cancelar">
                 <mdicon name="close" size="18"></mdicon>
             </button>
 
-            <h2>Crear rol</h2>
+            <h2>Editar rol</h2>
 
             <div class="form-group">
                 <label>NOMBRE</label>
-                <input type="text" v-model="new_rol.nombre" placeholder="...">
+                <input type="text" v-model="rolEdit.nombre">
             </div>
 
             <button type="submit" class="submit-btn">
-                CREAR ROL
+                ACEPTAR CAMBIOS
             </button>
         </form>
     </div>

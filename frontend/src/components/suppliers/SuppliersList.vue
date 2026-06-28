@@ -10,7 +10,7 @@ const supplierStore = useSupplierStore();
 const { listar, eliminar } = supplierStore;
 const router = useRouter();
 const { suppliers } = storeToRefs(supplierStore);
-const { setUser } = supplierStore; 
+const { setSupplier } = supplierStore; 
 const cargando = ref(true);
 const list_suppliers = computed(() => {
     if (suppliers.value.length === 0) {
@@ -28,14 +28,14 @@ const list_suppliers = computed(() => {
         });
     }
 });
-async function eliminarProveedores(user) {
+async function eliminarProveedores(supplier) {
     cargando.value= true;
-    await eliminar(user.id);
+    await eliminar(supplier.id);
     await listar();
     cargando.value= false;
 }
-function editarProveedor(user) {
-    setUser(user)
+function editarProveedor(supplier) {
+    setSupplier(supplier)
     router.push({ name: 'SuppliersEdit' });
 }
 onMounted(() => {

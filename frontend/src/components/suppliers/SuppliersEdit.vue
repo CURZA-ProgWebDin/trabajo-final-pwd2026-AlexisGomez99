@@ -24,11 +24,11 @@ async function editar() {
                 <mdicon name="close" size="18"></mdicon>
             </button>
 
-            <h2>Editar usuario</h2>
+            <h2>Editar proveedor</h2>
 
             <div class="form-group">
                 <label>NOMBRE</label>
-                <input type="text" v-model="supplierEdit.nombre" placeholder="Ej: Alexis Gómez">
+                <input type="text" v-model="supplierEdit.nombre" placeholder="...">
             </div>
 
             <div class="form-group">

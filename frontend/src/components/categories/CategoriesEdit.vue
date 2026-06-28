@@ -1,46 +1,45 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
-import { useRolesStore } from "../../storage/roles";
+import { useRouter } from 'vue-router';
+import { onMounted, reactive, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useCategorieStore } from '../../storage/categories';
 
-const rolStore = useRolesStore();
-const { crear } = rolStore;
 const router = useRouter();
+const categorieStore = useCategorieStore();
+const { categorieEdit } = storeToRefs(categorieStore);
+const { modificar } = categorieStore;
 const cargando = ref(true);
-const new_rol = reactive({
-    nombre: "",
-});
 
-async function submit() {
-    if (new_rol.nombre) {
-        await crear(new_rol);
-        new_rol.nombre = "";
-        router.push({ name: 'Roles' })
-
-    } else {
-        alert("Complete todos los campos.");
-    }
+async function editar() {
+    await modificar(categorieEdit.value);
+    router.push({ name: 'Categories' })
 }
 </script>
 
 <template>
     <div class="form-container">
-        <form @submit.prevent="submit" class="custom-form">
+        <form @submit.prevent="editar" class="custom-form">
 
-            <button type="button" @click="router.push({ name: 'Roles' })" class="cancel-btn" title="Cancelar">
+            <button type="button" @click="router.push({ name: 'Categories' })" class="cancel-btn" title="Cancelar">
                 <mdicon name="close" size="18"></mdicon>
             </button>
 
-            <h2>Crear rol</h2>
+            <h2>Editar categoria</h2>
 
             <div class="form-group">
                 <label>NOMBRE</label>
-                <input type="text" v-model="new_rol.nombre" placeholder="...">
+                <input type="text" v-model="categorieEdit.nombre">
             </div>
 
+            <div class="form-group">
+                <label>DESCRIPCION</label>
+                <input type="text" v-model="categorieEdit.descripcion">
+            </div>
+
+            
+
             <button type="submit" class="submit-btn">
-                CREAR ROL
+                ACEPTAR CAMBIOS
             </button>
         </form>
     </div>

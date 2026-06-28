@@ -1,6 +1,9 @@
-<script setup></script>
+<script setup>
+import CategoriesList from '../components/categories/CategoriesList.vue';
+
+</script>
 <template>
     <section>
-        <h1>CATEGORIAS</h1>
+        <CategoriesList></CategoriesList>
     </section>
 </template>
