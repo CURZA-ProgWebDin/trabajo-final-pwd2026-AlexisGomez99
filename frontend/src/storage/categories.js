@@ -2,7 +2,7 @@ import { ref } from "vue";
 import ApiService from "../service/ApiService";
 import { defineStore } from "pinia";
 
-export const useUserStore = defineStore("categories", () => {
+export const useCategorieStore = defineStore("categories", () => {
   const categoria = ref({});
   const categorias = ref([]);
   const loading = ref(false);

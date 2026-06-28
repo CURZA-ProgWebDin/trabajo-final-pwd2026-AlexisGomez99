@@ -1,7 +1,9 @@
 <script setup>
+import SuppliersList from '../components/suppliers/SuppliersList.vue';
+
 </script>
 <template>
     <section>
-        <h1>PROVEEDORES</h1>
+        <SuppliersList></SuppliersList>
     </section>
 </template>

@@ -3,7 +3,7 @@ import ApiService from "../service/ApiService";
 import { defineStore } from "pinia";
 import AuthService from "../service/AuthService";
 
-export const useUserStore = defineStore("movements", () => {
+export const useMovementStore = defineStore("movements", () => {
     const movement = ref({});
     const movements = ref([]);
     const loading = ref(false);

@@ -1,68 +1,55 @@
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-import { storeToRefs } from "pinia";
-import { useSupplierStore } from "../../storage/suppliers";
+import { useRouter } from 'vue-router';
+import { onMounted, reactive, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useSupplierStore } from '../../storage/suppliers';
 
-const supplierStore = useSupplierStore();
-const { crear } = supplierStore;
 const router = useRouter();
+const supplierStore = useSupplierStore();
+const { supplierEdit } = storeToRefs(supplierStore);
+const { modificar } = supplierStore;
 const cargando = ref(true);
-const new_supplier = reactive({
-    nombre: "",
-    email: "",
-    telefono: "",
-    contacto: ""
-});
 
-async function submit() {
-    if (new_supplier.nombre && new_supplier.email && new_supplier.contacto && new_supplier.telefono) {
-        await crear(new_supplier);
-        new_supplier.nombre = "";
-        new_supplier.email = "";
-        new_supplier.telefono = "";
-        new_supplier.contacto = "";
-        router.push({ name: 'Suppliers' })
-
-    } else {
-        alert("Complete todos los campos.");
-    }
+async function editar() {
+    await modificar(supplierEdit.value);
+    router.push({ name: 'Suppliers' })
 }
 </script>
 
 <template>
     <div class="form-container">
-        <form @submit.prevent="submit" class="custom-form">
+        <form @submit.prevent="editar" class="custom-form">
 
             <button type="button" @click="router.push({ name: 'Suppliers' })" class="cancel-btn" title="Cancelar">
                 <mdicon name="close" size="18"></mdicon>
             </button>
 
-            <h2>Crear proveedor</h2>
+            <h2>Editar usuario</h2>
 
             <div class="form-group">
                 <label>NOMBRE</label>
-                <input type="text" v-model="new_supplier.nombre" placeholder="Ej: Alexis Gómez">
+                <input type="text" v-model="supplierEdit.nombre" placeholder="Ej: Alexis Gómez">
             </div>
 
             <div class="form-group">
                 <label>EMAIL</label>
-                <input type="email" v-model="new_supplier.email" placeholder="correo@ejemplo.com">
+                <input type="email" v-model="supplierEdit.email" placeholder="correo@ejemplo.com">
             </div>
 
             <div class="form-group">
                 <label>TELEFONO</label>
-                <input type="text" v-model="new_supplier.telefono" placeholder="+54 -">
+                <input type="text" v-model="supplierEdit.telefono" placeholder="+54 -">
             </div>
 
             <div class="form-group">
                 <label>CONTACTO</label>
-                <input type="text" v-model="new_supplier.contacto" placeholder="info extra">
+                <input type="text" v-model="supplierEdit.contacto" placeholder="info extra">
             </div>
 
+            
 
             <button type="submit" class="submit-btn">
-                CREAR PROVEEDOR
+                ACEPTAR CAMBIOS
             </button>
         </form>
     </div>
