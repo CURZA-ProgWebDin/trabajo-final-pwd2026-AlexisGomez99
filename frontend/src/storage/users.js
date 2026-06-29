@@ -15,7 +15,7 @@ export const useUserStore = defineStore("usuarios", () => {
     rol_id: ''
   });
 
-  async function listar() {
+  async function listar_users() {
     loading.value = true;
     const data = await api_service.getAll();
     if (data) {
@@ -50,5 +50,5 @@ export const useUserStore = defineStore("usuarios", () => {
     userEdit.email = user.email;
     userEdit.rol_id = user.rol;
   }
-  return { users, user, userEdit, crear, eliminar, modificar, buscarUno, listar, setUser };
+  return { users, user, userEdit, crear, eliminar, modificar, buscarUno, listar_users, setUser };
 });

@@ -9,16 +9,16 @@ class ApiService {
   }
   async getAll() {
     try {
-      const  data  = await axios.get(this.url);
+      const data = await axios.get(this.url);
       return data;
     } catch (error) {
       this.errors.push(error.status);
-    } 
+    }
   }
   async findOne(id) {
     const data = await axios
       .get(`${this.url}${id}`)
-      .then((response) => response.data)
+      .then((response) => response)
       .catch((error) => this.errors.push(error.response.data));
     if (this.errors.length === 0) {
       return data;
@@ -26,11 +26,19 @@ class ApiService {
   }
   async create(data) {
     try {
-        const response = await axios.post(this.url, data);
-        return response;
+      const response = await axios.post(this.url, data);
+      return response;
     } catch (error) {
-        console.error("Hubo un error en la petición:", error.response?.data);
-        return null;
+      console.error("Hubo un error en la petición:", error.response?.data);
+      return null;
+    }
+  }
+  async getMis() {
+    try {
+      const data = await axios.get(this.url+'mis');
+      return data;
+    } catch (error) {
+      this.errors.push(error.status);
     }
   }
   async update(data, id) {

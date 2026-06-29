@@ -23,15 +23,6 @@ class AuthService {
           return data;
         }
     }
-    async getMyMovements() {
-        const data = await axios
-          .get('mis')
-          .then((response) => response.data)
-          .catch((error) => this.errors.push(error.response.data));
-        if (this.errors.length === 0) {
-          return data;
-        }
-    }
 }
 
 export default AuthService;

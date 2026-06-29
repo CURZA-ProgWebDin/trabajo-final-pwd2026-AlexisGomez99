@@ -4,9 +4,11 @@ import { useRouter } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useRolesStore } from "../../storage/roles";
 import { useUserStore } from "../../storage/users";
+import { useProductStore } from "../../storage/products";
 
 const rolStore = useRolesStore();
 const userStore = useUserStore();
+const productStore = useProductStore();
 const { roles } = storeToRefs(rolStore);
 const { listar } = rolStore;
 const { crear } = userStore;

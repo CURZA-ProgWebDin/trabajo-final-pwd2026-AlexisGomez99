@@ -7,7 +7,7 @@ import { mdiCone } from "@mdi/js";
 import { useRouter } from "vue-router";
 
 const userStore = useUserStore();
-const { listar, eliminar } = userStore;
+const { listar_users, eliminar } = userStore;
 const router = useRouter();
 const { users } = storeToRefs(userStore);
 const { setUser } = userStore; 
@@ -30,7 +30,7 @@ const list_users = computed(() => {
 async function eliminarUsuario(user) {
     cargando.value= true;
     await eliminar(user.id);
-    await listar();
+    await listar_users();
     cargando.value= false;
 }
 function editarUsuario(user) {
@@ -38,7 +38,7 @@ function editarUsuario(user) {
     router.push({ name: 'UsersEdit' });
 }
 onMounted(() => {
-    listar();
+    listar_users();
     cargando.value=false
 });
 </script>

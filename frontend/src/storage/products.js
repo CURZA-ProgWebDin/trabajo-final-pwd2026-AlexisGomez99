@@ -36,6 +36,8 @@ export const useProductStore = defineStore("productos", () => {
       product.value = data;
     }
     loading.value = false;
+
+    return data;
   }
 
   async function crear(data) {

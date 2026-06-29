@@ -8,7 +8,7 @@ import { useRouter } from "vue-router";
 import { useMovementStore } from "../../storage/movements.js";
 
 const movimientoStore = useMovementStore();
-const { listar_movement, eliminar } = movimientoStore;
+const { getMis, eliminar } = movimientoStore;
 const router = useRouter();
 const { movements } = storeToRefs(movimientoStore);
 const { setMovement } = movimientoStore; 
@@ -34,7 +34,7 @@ const list_movements = computed(() => {
 async function eliminarMovimiento(movement) {
     cargando.value= true;
     await eliminar(movement.id);
-    await listar_movement();
+    await getMis();
     cargando.value= false;
 }
 function editarMovimiento(movement) {
@@ -42,7 +42,7 @@ function editarMovimiento(movement) {
     router.push({ name: 'MovementsEdit' });
 }
 onMounted(() => {
-    listar_movement();
+    getMis();
     cargando.value=false
 });
 </script>

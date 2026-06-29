@@ -37,13 +37,6 @@ export const useAuthStore = defineStore("auth", () => {
         }
     }
 
-    async function getMe() {
-        const data = await api_service.findOne(auth_user.id);
-        if (data) {
-            auth_user.value = data;
-        }
-    }
-
     return {
         auth_user, rol_user, jwt, errors, status_code, authenticated, login, logout, register, getMe
     }

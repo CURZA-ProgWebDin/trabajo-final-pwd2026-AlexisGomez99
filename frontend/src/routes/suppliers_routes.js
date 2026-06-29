@@ -3,7 +3,7 @@ export const suppliers = [{
     name: "Suppliers",
     component: () => import("../views/SuppliersView.vue"),
     meta: {
-        rol_access: ["admin", "operador"],
+        rol_access: ["admin"],
         required_auth: true,
         orden: 300,
         menu: true
@@ -14,7 +14,7 @@ export const suppliers = [{
     component: () => import("../components/suppliers/SuppliersCreate.vue"),
     name: "SuppliersCreate",
     meta: {
-        rol_access: ["admin", "operador"],
+        rol_access: ["admin"],
         required_auth: true,
         orden: 301,
         menu: false

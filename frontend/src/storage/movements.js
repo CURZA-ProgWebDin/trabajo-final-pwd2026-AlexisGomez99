@@ -13,13 +13,21 @@ export const useMovementStore = defineStore("movimientos", () => {
     tipo: '',
     cantidad: '',
     motivo: '',
-    user: '',
-    producto: ''
+    user_id: '',
+    producto_id: ''
   });
 
-  async function listar() {
+  async function listar_movement() {
     loading.value = true;
     const data = await api_service.getAll();
+    if (data) {
+      movements.value = data;
+    }
+    loading.value = false;
+  }
+  async function getMis() {
+    loading.value = true;
+    const data = await api_service.getMis();
     if (data) {
       movements.value = data;
     }
@@ -40,7 +48,7 @@ export const useMovementStore = defineStore("movimientos", () => {
   }
 
   async function modificar(data) {
-    await api_service.update(data,data.id);
+    await api_service.update(data, data.id);
   }
 
   async function eliminar(id) {
@@ -51,8 +59,8 @@ export const useMovementStore = defineStore("movimientos", () => {
     movementEdit.tipo = movement.tipo;
     movementEdit.cantidad = movement.cantidad;
     movementEdit.motivo = movement.motivo;
-    movementEdit.producto = movement.producto;
-    movementEdit.user = movement.producto;
+    movementEdit.producto_id = movement.producto;
+    movementEdit.user_id = movement.user;
   }
-  return { movements, movement, movementEdit, crear, eliminar, modificar, buscarUno, listar, setMovement };
+  return { movements, movement, movementEdit, crear, eliminar, modificar, buscarUno, listar_movement, setMovement,getMis };
 });

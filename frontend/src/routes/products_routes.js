@@ -14,7 +14,7 @@ export const products = [{
     component: () => import("../components/products/ProductsCreate.vue"),
     name: "ProductsCreate",
     meta: {
-        rol_access: ["admin", "operador"],
+        rol_access: ["admin"],
         required_auth: true,
         orden: 101,
         menu: false
@@ -25,7 +25,7 @@ export const products = [{
     component: () => import("../components/products/ProductsEdit.vue"),
     name: "ProductsEdit",
     meta: {
-        rol_access: ["admin", "operador"],
+        rol_access: ["admin"],
         required_auth: true,
         orden: 102,
         menu: false

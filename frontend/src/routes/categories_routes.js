@@ -3,7 +3,7 @@ export const categories = [{
     name: "Categories",
     component: () => import("../views/CategoriesView.vue"),
     meta: {
-        rol_access: ["admin", "operador"],
+        rol_access: ["admin"],
         required_auth: true,
         orden: 200,
         menu: true
@@ -14,7 +14,7 @@ export const categories = [{
     component: () => import("../components/categories/CategoriesCreate.vue"),
     name: "CategoriesCreate",
     meta: {
-        rol_access: ["admin", "operador"],
+        rol_access: ["admin"],
         required_auth: true,
         orden: 201,
         menu: false
@@ -25,7 +25,7 @@ export const categories = [{
     component: () => import("../components/categories/CategoriesEdit.vue"),
     name: "CategoriesEdit",
     meta: {
-        rol_access: ["admin", "operador"],
+        rol_access: ["admin"],
         required_auth: true,
         orden: 202,
         menu: false
